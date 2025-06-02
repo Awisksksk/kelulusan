@@ -78,12 +78,8 @@
     </style>
 </head>
 <body>
-    <div class="countdown" id="countdown">
-        <h1>CEK KELULUSAN AKAN DIBUKA DALAM</h1>
-        <div id="timer">05:00</div>
-    </div>
 
-    <div class="container" id="loginForm">
+    <div class="container" id="loginForm" style="display: block;">
         <h1>CEK STATUS KELULUSAN</h1>
         
         <div class="input-group">
@@ -423,25 +419,6 @@
   {"nisn":"0085676926","nama":"YOHANA LOTE","status":"LULUS"},
   {"nisn":"0097525516","nama":"YOVIE KURNIAWAN","status":"LULUS"}
         ];
-
-       const targetTime = new Date(new Date().getTime() + 10 * 60 * 1000);
-        
-       function updateCountdown() {
-    const now = new Date();
-    const distance = targetTime - now;
-
-    if (distance <= 0) {
-        document.getElementById('countdown').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-        return;
-    }
-
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById('timer').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
         
         document.getElementById('cekBtn').addEventListener('click', () => {
             const nisn = document.getElementById('nisn').value.trim();
@@ -477,9 +454,6 @@
                 `;
             }
         });
-        
-      setInterval(updateCountdown, 1000);
-updateCountdown();
     </script>
 </body>
 </html>
