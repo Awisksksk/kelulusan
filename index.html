@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEK KELULUSAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #fff9e6;
+            color: #333;
+        }
+        .countdown {
+            text-align: center;
+            margin-top: 150px;
+            font-size: 1.5em;
+            color: #ff9900;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+            border: 1px solid #ffcc00;
+            background: white;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            display: none;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #ff9900;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ffcc00;
+            font-size: 0.9em;
+        }
+        button {
+            background: #ffcc00;
+            border: none;
+            color: #333;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ffcc00;
+            display: none;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown" id="countdown">
+        <h1>CEK KELULUSAN AKAN DIBUKA DALAM</h1>
+        <div id="timer">05:00</div>
+    </div>
+
+    <div class="container" id="loginForm">
+        <h1>CEK STATUS KELULUSAN</h1>
+        
+        <div class="input-group">
+            <label for="nisn">NISN:</label>
+            <input type="text" id="nisn" placeholder="Masukkan NISN">
+        </div>
+        
+        <div class="input-group">
+            <label for="nama">Nama Lengkap:</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama Lengkap">
+        </div>
+        
+        <button id="cekBtn">CEK STATUS</button>
+        
+        <div id="result"></div>
+    </div>
+    
+    <footer>
+        &copy; 2025 Haikal Al Qhardhawy
+    </footer>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('Klik Kanan Di Matikan');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                alert('Jgn inspect');
+            }
+        });
+
+
+        const data = [
+            {"nisn":"0092123369","nama":"ABDILLAH RAMDAHAN","status":"LULUS"},
+  {"nisn":"0103775302","nama":"ADELIYA DWI AMEL NAFILA","status":"LULUS"},
+  {"nisn":"0096881497","nama":"AHMAD ROFIQ","status":"LULUS"},
+  {"nisn":"0099482792","nama":"AIRA ELVITA","status":"LULUS"},
+  {"nisn":"0108044144","nama":"ALTIS MUHAMMAD FAUZI","status":"LULUS"},
+  {"nisn":"3080115795","nama":"ANDIKA AKBAR","status":"LULUS"},
+  {"nisn":"0054527552","nama":"ANDRE ZHON MOSES PURBA","status":"LULUS"},
+  {"nisn":"0092504821","nama":"ANINDA PUTRI RAIHANI","status":"LULUS"},
+  {"nisn":"0109911670","nama":"AURA TRI HAPSARY","status":"LULUS"},
+  {"nisn":"0094720707","nama":"AZQIA NISAFANESTI","status":"LULUS"},
+  {"nisn":"0105146522","nama":"CHELSEA RYSKINA","status":"LULUS"},
+  {"nisn":"0099064335","nama":"CHIESA ANANDA PUTRI","status":"LULUS"},
+  {"nisn":"0091263957","nama":"ELFITA MAULANI","status":"LULUS"},
+  {"nisn":"0109677365","nama":"FAJAR BAHRI","status":"LULUS"},
+  {"nisn":"0093095170","nama":"ILHAM MAULANA","status":"LULUS"},
+  {"nisn":"0114778223","nama":"INDIRA TIFANNY IRAWAN","status":"LULUS"},
+  {"nisn":"0092326950","nama":"JHONATAN FEBRIANTO PANJAITAN","status":"LULUS"},
+  {"nisn":"0079814816","nama":"JULIAN ADITIA JAYA","status":"LULUS"},
+  {"nisn":"0102183103","nama":"KASIH PERTIWI HASIBUAN","status":"LULUS"},
+  {"nisn":"0092209490","nama":"LAKSAMANA JIHAT","status":"LULUS"},
+  {"nisn":"0096725318","nama":"LIKA TITIAN RAHMADANI","status":"LULUS"},
+  {"nisn":"0098636799","nama":"LUTHFI DWI CHANTIKA","status":"LULUS"},
+  {"nisn":"0089310486","nama":"MARTHA MUDE","status":"LULUS"},
+  {"nisn":"0108208525","nama":"MOHAMAD RAVA IRGY HAMID","status":"LULUS"},
+  {"nisn":"0096527505","nama":"MUHAMMAD ADITTIA PRATAMA","status":"LULUS"},
+  {"nisn":"0094884315","nama":"MUHAMMAD ARIEF HARAHAP","status":"LULUS"},
+  {"nisn":"0091018673","nama":"MUHAMMAD RIDWAN","status":"LULUS"},
+  {"nisn":"0095943185","nama":"MUTIA SUCI RAMADANI","status":"LULUS"},
+  {"nisn":"0099566541","nama":"NUR FITRIYANI","status":"LULUS"},
+  {"nisn":"3094348628","nama":"RAHMAT HIDAYAT HSB","status":"LULUS"},
+  {"nisn":"0094951468","nama":"RAHMAT OKTA CANESIS","status":"LULUS"},
+  {"nisn":"0096362378","nama":"RENDY FAJRIANSYAH","status":"LULUS"},
+  {"nisn":"0099727017","nama":"RIFQI AU'NU RAHMAN","status":"LULUS"},
+  {"nisn":"0096842772","nama":"RIKI OKI PRA SETIAWAN","status":"LULUS"},
+  {"nisn":"0109050392","nama":"RISKA WULANDARI","status":"LULUS"},
+  {"nisn":"0082279961","nama":"RIZKY AHMAD FAUZAN","status":"LULUS"},
+  {"nisn":"0091533744","nama":"RIZKY JULZIDANE","status":"LULUS"},
+  {"nisn":"0101166452","nama":"ROMAISAH SINAGA","status":"LULUS"},
+  {"nisn":"0094198617","nama":"RYADI EFPRIANTO GULTOM","status":"LULUS"},
+  {"nisn":"0099563734","nama":"SELVIYANA RAMADHANI","status":"LULUS"},
+  {"nisn":"0095313057","nama":"SHIFA HANDINI PUTRI","status":"LULUS"},
+  {"nisn":"0106662543","nama":"SONI ANUGRAH PRATAMA","status":"LULUS"},
+  {"nisn":"0101977882","nama":"STIVEN","status":"LULUS"},
+  {"nisn":"0095124153","nama":"SYIFA ALINNI KHAIRUNISA","status":"LULUS"},
+  {"nisn":"0101627572","nama":"WASYWA NUR WANI ASYIFA","status":"LULUS"},
+  {"nisn":"0088764293","nama":"ADITYA DAMANIK","status":"LULUS"},
+  {"nisn":"0106357179","nama":"ADITYA RIDHO PRAMANA","status":"LULUS"},
+  {"nisn":"0105623512","nama":"AHMAD RILJAS PRATAMA","status":"LULUS"},
+  {"nisn":"0119532521","nama":"ALFATIR THALIB","status":"LULUS"},
+  {"nisn":"0103293011","nama":"AMANDA AMELIA PUTRI","status":"LULUS"},
+  {"nisn":"0094630566","nama":"ANANDA PUTRA RAIHANA","status":"LULUS"},
+  {"nisn":"0097493198","nama":"AULIA TESYA","status":"LULUS"},
+  {"nisn":"0104365194","nama":"AZZAHRA SERIEL ACMECCA","status":"LULUS"},
+  {"nisn":"0104859230","nama":"CHANDRA PUTRA","status":"LULUS"},
+  {"nisn":"0107528442","nama":"CHELLENT VENNIESIA","status":"LULUS"},
+  {"nisn":"0073576352","nama":"DESI NATALIA","status":"LULUS"},
+  {"nisn":"0096636781","nama":"EKA SILVIA","status":"LULUS"},
+  {"nisn":"0091563379","nama":"EVANDER NATANAEL DODO","status":"LULUS"},
+  {"nisn":"0095059105","nama":"FITRIANA NURSAIDAH","status":"LULUS"},
+  {"nisn":"0095574804","nama":"FOVO ROADIQUEST","status":"LULUS"},
+  {"nisn":"3104865953","nama":"HAIKEL ALDIANO","status":"LULUS"},
+  {"nisn":"0092136507","nama":"ILHAM SAPUTRA HARAHAP","status":"LULUS"},
+  {"nisn":"0094832263","nama":"LIZA ANJANI","status":"LULUS"},
+  {"nisn":"0102806179","nama":"M. KEISHA AL MAHRY","status":"LULUS"},
+  {"nisn":"0107823704","nama":"MERLIN SILVIA","status":"LULUS"},
+  {"nisn":"0099660267","nama":"MUHAMAD FAREYZI","status":"LULUS"},
+  {"nisn":"0104727601","nama":"MUHAMMAD FATHAN FARIS NUR RAHMAN FATHONI","status":"LULUS"},
+  {"nisn":"0098252674","nama":"MUHAMMAD HABIBI","status":"LULUS"},
+  {"nisn":"3103758817","nama":"MUTIARA HERMAYNA","status":"LULUS"},
+  {"nisn":"0094054247","nama":"NIKEN SYLVANIA PUTRI","status":"LULUS"},
+  {"nisn":"0094810643","nama":"NUR ANNISA PUTRI","status":"LULUS"},
+  {"nisn":"0092940147","nama":"PUTRI CALISTA SINURAT","status":"LULUS"},
+  {"nisn":"0091838771","nama":"RADITYA PUTERA PRASETYO","status":"LULUS"},
+  {"nisn":"0092930569","nama":"RAHMADHANI SAFITRI","status":"LULUS"},
+  {"nisn":"0093889448","nama":"RAYA AZZAM SYAWALI","status":"LULUS"},
+  {"nisn":"0097445681","nama":"RENDHY AGUS JUNIOR","status":"LULUS"},
+  {"nisn":"0107451074","nama":"RENDY YULIANTO","status":"LULUS"},
+  {"nisn":"0105665210","nama":"RIZKI ALAM SYAH","status":"LULUS"},
+  {"nisn":"0093212607","nama":"RIZKY ARIE","status":"LULUS"},
+  {"nisn":"0108376493","nama":"RIZKY WAHYU FADILLAH","status":"LULUS"},
+  {"nisn":"0099863634","nama":"SATRIA ALAM","status":"LULUS"},
+  {"nisn":"0096600151","nama":"ADKALANO SEPTAMANDA","status":"lulus"},
+  {"nisn":"0095275716","nama":"AFIF SUKOCO","status":"lulus"},
+  {"nisn":"0095216678","nama":"AGNILIA AGUSTIN","status":"lulus"},
+  {"nisn":"0098060013","nama":"AHMAD ALFIAN NUGRAHA","status":"lulus"},
+  {"nisn":"0059229970","nama":"ARYA PRADITIA","status":"lulus"},
+  {"nisn":"0096501376","nama":"ASYIFA OKTARIANA","status":"lulus"},
+  {"nisn":"3106034198","nama":"BALQIS SYAFA SYABILA","status":"lulus"},
+  {"nisn":"0094118694","nama":"DAFA SAFUTRA","status":"lulus"},
+  {"nisn":"0108770442","nama":"DAFFA FADHIL PRATAMA","status":"lulus"},
+  {"nisn":"0098688805","nama":"DEVIN ARIE FERNANDA","status":"lulus"},
+  {"nisn":"0094310446","nama":"ERVITA FADMALASARI ZALUKHU","status":"lulus"},
+  {"nisn":"0096384176","nama":"FITRI RAHMAYANI UTAMI","status":"lulus"},
+  {"nisn":"0109668927","nama":"HAFIZ ROBIANSYAH","status":"lulus"},
+  {"nisn":"0084100297","nama":"HALASSON SIHOMBING","status":"lulus"},
+  {"nisn":"0098824205","nama":"HENDRIANSA","status":"lulus"},
+  {"nisn":"0105771506","nama":"JOHAN REYNALDI PARNINGOTAN PANJAITAN","status":"lulus"},
+  {"nisn":"0097779489","nama":"JUNDI MAULANA","status":"lulus"},
+  {"nisn":"0105750659","nama":"KAEYLA PUTRI NABILA LUBIS","status":"lulus"},
+  {"nisn":"0101717697","nama":"KEYZA SUCI RAMADHANI","status":"lulus"},
+  {"nisn":"0099209775","nama":"KURNIADITYA PRATAMA","status":"lulus"},
+  {"nisn":"0095749737","nama":"LOVITA DINDA KANAYA","status":"lulus"},
+  {"nisn":"0096885730","nama":"MEILIA BARHAYATI","status":"lulus"},
+  {"nisn":"0103823583","nama":"MUHAMMAD AJI PANGESTU","status":"lulus"},
+  {"nisn":"0096096369","nama":"MUHAMMAD ALFARIZIN","status":"lulus"},
+  {"nisn":"3093838368","nama":"MUHAMMAD DERLY YUDIAN","status":"lulus"},
+  {"nisn":"0099972580","nama":"MUHAMMAD HAIKAL RAMADHAN","status":"lulus"},
+  {"nisn":"0099418610","nama":"MUHAMMAD RIZKI","status":"lulus"},
+  {"nisn":"0097068165","nama":"MUHD. RAIHAN","status":"lulus"},
+  {"nisn":"3091704393","nama":"NADIRA ALMAHIRA","status":"lulus"},
+  {"nisn":"0095804051","nama":"OLIVIA CINDY NETANIA","status":"lulus"},
+  {"nisn":"0094035979","nama":"PANISA RAMADANI","status":"lulus"},
+  {"nisn":"0093671619","nama":"RAHMAD DANY","status":"lulus"},
+  {"nisn":"0082391335","nama":"RIO ULKAHIRAN","status":"lulus"},
+  {"nisn":"0082080682","nama":"RISKA ISAH SINAGA","status":"lulus"},
+  {"nisn":"0166755392","nama":"SASHY NIKEISHA","status":"lulus"},
+  {"nisn":"0096564011","nama":"SENTA RIA HUTAPEA","status":"lulus"},
+  {"nisn":"0091980062","nama":"SHAIFUL ULIL AZMI","status":"lulus"},
+  {"nisn":"0096649371","nama":"SILVIA HANNA","status":"lulus"},
+  {"nisn":"0098815902","nama":"SRI FUJI RAHAYU","status":"lulus"},
+  {"nisn":"0103609655","nama":"STEFANNY SIREGAR","status":"lulus"},
+  {"nisn":"0095584985","nama":"SYAHIRA AKMALIA S","status":"lulus"},
+  {"nisn":"0095047200","nama":"VENY FALENSKY SINAGA","status":"lulus"},
+  {"nisn":"0102324170","nama":"WARDATUL AKMAM","status":"lulus"},
+  {"nisn":"0098466172","nama":"ZAHARA VITDYAN APRILIA","status":"lulus"},
+  {"nisn":"0104040849","nama":"ABIYU ADIS HIBATULLAH","status":"lulus"},
+  {"nisn":"3102469082","nama":"ADELIA ROYANI","status":"lulus"},
+  {"nisn":"0098432573","nama":"AISYAH NOFRIYANTI","status":"lulus"},
+  {"nisn":"0095285250","nama":"AKBAR OCTA PRATAMA","status":"lulus"},
+  {"nisn":"3103945986","nama":"AKHSAN ARSYAHFIN HASIBUAN","status":"lulus"},
+  {"nisn":"0103115466","nama":"ALFIN MENDOZA","status":"lulus"},
+  {"nisn":"3097509662","nama":"ALIFAH SYAKIRA","status":"lulus"},
+  {"nisn":"0097770476","nama":"ALKALFIN JOSEO SILITONGA","status":"lulus"},
+  {"nisn":"0099840084","nama":"ALVIA FITRI JR","status":"lulus"},
+  {"nisn":"0108517097","nama":"ANDI SETIAWAN","status":"lulus"},
+  {"nisn":"0108113515","nama":"ANGELYN AGRAENI","status":"lulus"},
+  {"nisn":"0102643376","nama":"CARISSA ALANZA","status":"lulus"},
+  {"nisn":"0094647219","nama":"CHOKI SORMIN","status":"lulus"},
+  {"nisn":"0094048146","nama":"DELLA AMELISA","status":"lulus"},
+  {"nisn":"0096318905","nama":"DIMAS SAPUTRA","status":"lulus"},
+  {"nisn":"3091995152","nama":"EKA MEIDITA PRATIWI","status":"lulus"},
+  {"nisn":"0096746142","nama":"FANNY ANANDIA","status":"lulus"},
+  {"nisn":"0093858675","nama":"FITRIANINGSIH","status":"lulus"},
+  {"nisn":"0097137995","nama":"HIBRIZI DZAKY RAMADHAN","status":"lulus"},
+  {"nisn":"0101776468","nama":"JUNEELA FORSIA HUTAGALUNG","status":"lulus"},
+  {"nisn":"0106895316","nama":"KEYSUA JUNITA SITUMEANG","status":"lulus"},
+  {"nisn":"0096449744","nama":"KEYZA DWI DELPIANA","status":"lulus"},
+  {"nisn":"0093445280","nama":"MICO DEANSYA","status":"lulus"},
+  {"nisn":"0092661413","nama":"MINI RAVIGA MARISA","status":"lulus"},
+  {"nisn":"0091267607","nama":"MOCHAMMAD PUTRA PRATAMA","status":"lulus"},
+  {"nisn":"0096766967","nama":"MUHAMMAD DANIEL FERNANDO","status":"lulus"},
+  {"nisn":"0095373606","nama":"MUHAMMAD LUTFI NUR AZIZ","status":"lulus"},
+  {"nisn":"0102568848","nama":"NABILA RAINI FEBRIANTI","status":"lulus"},
+  {"nisn":"0093649565","nama":"NASYA PRIRENOLIA RAULE","status":"lulus"},
+  {"nisn":"0093658175","nama":"NUR FITRIANA","status":"lulus"},
+  {"nisn":"0104413103","nama":"RADJA PUTRA SIMANGUNSONG","status":"lulus"},
+  {"nisn":"0102511665","nama":"RAFFA PRASTIO NUGROHO","status":"lulus"},
+  {"nisn":"0109497919","nama":"RAVA HAFIZ SYAFIQRI","status":"lulus"},
+  {"nisn":"0095640084","nama":"REA DESWITA SARI","status":"lulus"},
+  {"nisn":"0104666749","nama":"REISYA BALQIS","status":"lulus"},
+  {"nisn":"0108599259","nama":"ROI ITO ARTA JULIANA BARINGBING","status":"lulus"},
+  {"nisn":"0104373757","nama":"SATRIA WIRAYUDHA","status":"lulus"},
+  {"nisn":"0091442237","nama":"SHAFA ZAFIRAH","status":"lulus"},
+  {"nisn":"0098678468","nama":"STEFFEN RUDOLFO JONA SIMBOLON","status":"lulus"},
+  {"nisn":"0091674075","nama":"STONER SUAYUB ABDULLAH","status":"lulus"},
+  {"nisn":"0094800629","nama":"SYAID RAMADHAN","status":"lulus"},
+  {"nisn":"0099299998","nama":"TAZKIA KHAIRINA","status":"lulus"},
+  {"nisn":"0093030551","nama":"WAODE SITI BULAWA","status":"lulus"},
+  {"nisn":"0108978283","nama":"ZION DIJAN","status":"lulus"},
+  {"nisn":"3099549172","nama":"AGNI ELIN HERLINA","status":"LULUS"},
+  {"nisn":"0098888976","nama":"AGUNG ISKANDAR","status":"LULUS"},
+  {"nisn":"0091405175","nama":"AHMAD FAISAL HASIBUAN","status":"LULUS"},
+  {"nisn":"0097104090","nama":"ANA SAFITRI","status":"LULUS"},
+  {"nisn":"0099598733","nama":"ANDHIKA SYAHPUTRA. M","status":"LULUS"},
+  {"nisn":"0098300969","nama":"ANGGUN HAYATUL MUTMAINAH","status":"LULUS"},
+  {"nisn":"0081739467","nama":"ARIANTO PUTRA KURNIAWAN","status":"LULUS"},
+  {"nisn":"0098841602","nama":"CHALLYSTA VIKE ADE LINTANG","status":"LULUS"},
+  {"nisn":"0104377480","nama":"CLARISHA B.SILABAN","status":"LULUS"},
+  {"nisn":"0099219730","nama":"DAVID ALFIYANSYAH ROKAN","status":"LULUS"},
+  {"nisn":"3093401042","nama":"DAVIN ASDACIPAL","status":"LULUS"},
+  {"nisn":"0096586323","nama":"DINDA MATIUS","status":"LULUS"},
+  {"nisn":"0084834659","nama":"DT.ROBBY IHSAN RAMADHAN","status":"LULUS"},
+  {"nisn":"0096702533","nama":"GUSTI FADIL RAMADHAN","status":"LULUS"},
+  {"nisn":"0097848963","nama":"HADI RISQI MADANI","status":"LULUS"},
+  {"nisn":"0091534736","nama":"HAIKAL AL QARDHAWY","status":"LULUS"},
+  {"nisn":"0075325652","nama":"HAKIM","status":"LULUS"},
+  {"nisn":"0095164241","nama":"JOSH FERNANDA LUBIS","status":"LULUS"},
+  {"nisn":"0109737271","nama":"KYNAN ALBIANO","status":"LULUS"},
+  {"nisn":"0097656721","nama":"MICAEL NABABAN","status":"LULUS"},
+  {"nisn":"0091243135","nama":"MUHAMAD REYHANZ PRATAMA","status":"LULUS"},
+  {"nisn":"0108614154","nama":"MUHAMMAD ICHSAN PRIANKA","status":"LULUS"},
+  {"nisn":"0099076998","nama":"MUHAMMAD NABHIL ADHA LUBIS","status":"LULUS"},
+  {"nisn":"0101377308","nama":"NATASYA DWI TANIA SAGALA","status":"LULUS"},
+  {"nisn":"0092207022","nama":"NAURA ARSYAFINI PUTRI","status":"LULUS"},
+  {"nisn":"0087863736","nama":"NUR ALIA DESMALIZA","status":"LULUS"},
+  {"nisn":"0098642855","nama":"NUR FITRIYANI","status":"LULUS"},
+  {"nisn":"0091596497","nama":"PRAY DANIEL SARAGIH","status":"LULUS"},
+  {"nisn":"0098389007","nama":"PUTRA KURNIAWAN","status":"LULUS"},
+  {"nisn":"0095623631","nama":"PUTRI HAFIZAH","status":"LULUS"},
+  {"nisn":"0093378450","nama":"RANAA DILA ASSYQANA","status":"LULUS"},
+  {"nisn":"0093162180","nama":"RAYHAN ALFARISY","status":"LULUS"},
+  {"nisn":"0101155591","nama":"RAYMOND ARIZON","status":"LULUS"},
+  {"nisn":"0107002160","nama":"REYHAN AJI SETIAWAN","status":"LULUS"},
+  {"nisn":"0092007807","nama":"RIFANA WIRIKA JASMINE","status":"LULUS"},
+  {"nisn":"0108060775","nama":"RONA SIHOMBING","status":"LULUS"},
+  {"nisn":"0106293677","nama":"SAFA RIYANTI","status":"LULUS"},
+  {"nisn":"0101692197","nama":"SHESA DWI OCTHAVINA","status":"LULUS"},
+  {"nisn":"0097030066","nama":"SIZMA AWALYA","status":"LULUS"},
+  {"nisn":"0094118669","nama":"WENNI SAPUTRI","status":"LULUS"},
+  {"nisn":"0094636909","nama":"ZAHRA NURSIFAH","status":"LULUS"},
+  {"nisn":"0091228012","nama":"AHMAD ALDO SAPUTRA","status":"LULUS"},
+  {"nisn":"0096227137","nama":"AL HAFIZD TRIONO","status":"LULUS"},
+  {"nisn":"0093302143","nama":"ALIF FATIH AKHRAM","status":"LULUS"},
+  {"nisn":"0095950310","nama":"ANDERIO APTRIGEN HABILE","status":"LULUS"},
+  {"nisn":"0095275406","nama":"ANDRE AGUS TULADANG","status":"LULUS"},
+  {"nisn":"3104393412","nama":"ARTIKA SARI DEWI","status":"LULUS"},
+  {"nisn":"0101301876","nama":"ARVINZA WAHYU ARARYA","status":"LULUS"},
+  {"nisn":"0101861811","nama":"AURA EVAYANTI","status":"LULUS"},
+  {"nisn":"0101667604","nama":"DAVID PRATAMA","status":"LULUS"},
+  {"nisn":"0085886494","nama":"DEKAPLEN SIRAIT","status":"LULUS"},
+  {"nisn":"0097981407","nama":"DHEFAN ALIF WANDANI","status":"LULUS"},
+  {"nisn":"0098740309","nama":"FANNY MELLYTA","status":"LULUS"},
+  {"nisn":"0099689732","nama":"FARAH DIANA SOFYANI","status":"LULUS"},
+  {"nisn":"0108842341","nama":"FITRAH AMELIA","status":"LULUS"},
+  {"nisn":"0094731630","nama":"GALIH WICAKSONO","status":"LULUS"},
+  {"nisn":"0098390443","nama":"IBNU FACHRUDIN","status":"LULUS"},
+  {"nisn":"0098561960","nama":"IBRA ROYANDRA","status":"LULUS"},
+  {"nisn":"0106462585","nama":"KARNI ROSITA","status":"LULUS"},
+  {"nisn":"0097397363","nama":"KEVIN ARIS AKBAR","status":"LULUS"},
+  {"nisn":"0105117504","nama":"LANGIT RAKA ALGHOZALI","status":"LULUS"},
+  {"nisn":"0097197158","nama":"LOVIETA DIANA","status":"LULUS"},
+  {"nisn":"0101303132","nama":"MUHAMMAD IMAM INSANI","status":"LULUS"},
+  {"nisn":"0092828173","nama":"MUHAMMAD JIHAD EVRYZAL","status":"LULUS"},
+  {"nisn":"0099644852","nama":"MUHAMMAD LATHIIF MOELDY","status":"LULUS"},
+  {"nisn":"3093564765","nama":"MUHAMMAD RUSLI","status":"LULUS"},
+  {"nisn":"0096241291","nama":"NAWZIRA RAMADHANI PUTRI HIMAWAN","status":"LULUS"},
+  {"nisn":"0082543411","nama":"NUR WAHIDA","status":"LULUS"},
+  {"nisn":"0106176853","nama":"NURHAFIZAH ALZAHRA","status":"LULUS"},
+  {"nisn":"0094708788","nama":"PRITA SRI KASIH MANULLANG","status":"LULUS"},
+  {"nisn":"0096766486","nama":"RAHMA KULZANNAH","status":"LULUS"},
+  {"nisn":"0082250174","nama":"RAHMATIA YUNUS","status":"LULUS"},
+  {"nisn":"0102939908","nama":"RAISYA NABILA ALIFI","status":"LULUS"},
+  {"nisn":"3095125041","nama":"RAMADHAN AMRI KURNIA","status":"LULUS"},
+  {"nisn":"0096727848","nama":"REYHAN FAUZI TAMBUNAN","status":"LULUS"},
+  {"nisn":"0095811389","nama":"REYSHA NOVIA DAMAYANTI","status":"LULUS"},
+  {"nisn":"0093560657","nama":"REZKY NURHUDA","status":"LULUS"},
+  {"nisn":"0103580918","nama":"SASKYA MEWINDA MANURUNG","status":"LULUS"},
+  {"nisn":"0091106504","nama":"SUBHAN ADRIYANSYAH","status":"LULUS"},
+  {"nisn":"0097461772","nama":"SYALIKHA ANAYYA AJNI","status":"LULUS"},
+  {"nisn":"0091094072","nama":"VIANA SANDRA","status":"LULUS"},
+  {"nisn":"0095253344","nama":"WESLEY ORLANDO SINAGA","status":"LULUS"},
+  {"nisn":"0091390996","nama":"WILLIARDI","status":"LULUS"},
+  {"nisn":"0093811357","nama":"ZAKIYA FIRSYA","status":"LULUS"},
+  {"nisn":"3099413101","nama":"ZIRANI AYUMA ALFUZZAHRA","status":"LULUS"},
+  {"nisn":"0096816524","nama":"ADE PRABU SIREGAR","status":"LULUS"},
+  {"nisn":"0093600816","nama":"ADELLEA ANUGRAH","status":"LULUS"},
+  {"nisn":"0095761375","nama":"ADITYA SYAH PUTRA","status":"LULUS"},
+  {"nisn":"0092441132","nama":"AL KHALIFI","status":"LULUS"},
+  {"nisn":"0098221987","nama":"ALDIANSYAH","status":"LULUS"},
+  {"nisn":"0097495631","nama":"APRILIA ENJELITA DEBORA NADEAK","status":"LULUS"},
+  {"nisn":"0099580728","nama":"ARDIANSYAH BAGAS PRAKOSO","status":"LULUS"},
+  {"nisn":"0099088971","nama":"ASBI HAIDER PRATAMA","status":"LULUS"},
+  {"nisn":"0105180700","nama":"AULIA MARSHIFA","status":"LULUS"},
+  {"nisn":"0118879974","nama":"AUSTRIA WIDI HASIBUAN","status":"LULUS"},
+  {"nisn":"0093849638","nama":"DEWI KHOLIDATUL UMMAH","status":"LULUS"},
+  {"nisn":"0099665123","nama":"DINDA ELFINA ZUHRA","status":"LULUS"},
+  {"nisn":"0092762126","nama":"DINDA PRIYANKA","status":"LULUS"},
+  {"nisn":"0091094741","nama":"ELFARAZY FARAEL QUDSY","status":"LULUS"},
+  {"nisn":"0097962718","nama":"FAHRI MAULIDUL AKBAR","status":"LULUS"},
+  {"nisn":"0099277744","nama":"FEBY ARMILIA PULUNGAN","status":"LULUS"},
+  {"nisn":"0103056561","nama":"FIKTOR OJAHAN SIMBOLON","status":"LULUS"},
+  {"nisn":"0093053227","nama":"HARIS SETIAWAN","status":"LULUS"},
+  {"nisn":"3108243945","nama":"HELMA JULIANA","status":"LULUS"},
+  {"nisn":"0096214456","nama":"HERA HIKMA JUWITA","status":"LULUS"},
+  {"nisn":"0092599196","nama":"LENI ZAHKYA","status":"LULUS"},
+  {"nisn":"0098219603","nama":"M. EVAN PERMANA","status":"LULUS"},
+  {"nisn":"0093944984","nama":"MERCY VICTORIA TAMBUNAN","status":"LULUS"},
+  {"nisn":"0092297256","nama":"MUHAMMAD ASLAM LEON FADILAH","status":"LULUS"},
+  {"nisn":"0106858687","nama":"MUHAMMAD CEZZA DILZIAN PUTRA RAYSA","status":"LULUS"},
+  {"nisn":"0104653545","nama":"MUHAMMAD EHSAN ALI","status":"LULUS"},
+  {"nisn":"0104089446","nama":"NADYA APRILLIYANI","status":"LULUS"},
+  {"nisn":"0101500729","nama":"NAOMI INDRIA","status":"LULUS"},
+  {"nisn":"0108731672","nama":"NURUL KAMALIAH HAMZAH","status":"LULUS"},
+  {"nisn":"0101796956","nama":"PIZANULLAH RAHMA PUTRA","status":"LULUS"},
+  {"nisn":"0098056405","nama":"RAIMUNDUS RENDY","status":"LULUS"},
+  {"nisn":"0091462146","nama":"RAJA ALEA ZAFIRAH","status":"LULUS"},
+  {"nisn":"0095973305","nama":"REFAN HABIB MALKAN","status":"LULUS"},
+  {"nisn":"0101470113","nama":"REIYA ANNISA PUTRI","status":"LULUS"},
+  {"nisn":"3100934793","nama":"RENO ADRIANO","status":"LULUS"},
+  {"nisn":"0103113926","nama":"REVI APRILIA MARFIONA","status":"LULUS"},
+  {"nisn":"0098505957","nama":"RIFKI NADIM","status":"LULUS"},
+  {"nisn":"0096444898","nama":"RISKA INDRIANI","status":"LULUS"},
+  {"nisn":"0093853892","nama":"RIZQULLAH AL GHANY","status":"LULUS"},
+  {"nisn":"0091297279","nama":"SALMAN ALFARIZI HASIBUAN","status":"LULUS"},
+  {"nisn":"0099222105","nama":"SHERINA EKA PUTRI","status":"LULUS"},
+  {"nisn":"0104464439","nama":"SILVIYANI MARGARETHA NABABAN","status":"LULUS"},
+  {"nisn":"0085676926","nama":"YOHANA LOTE","status":"LULUS"},
+  {"nisn":"0097525516","nama":"YOVIE KURNIAWAN","status":"LULUS"}
+        ];
+
+        let countdown = 300;
+        
+        function updateCountdown() {
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (countdown <= 0) {
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+                return;
+            }
+            
+            countdown--;
+            setTimeout(updateCountdown, 1000);
+        }
+        
+        document.getElementById('cekBtn').addEventListener('click', () => {
+            const nisn = document.getElementById('nisn').value.trim();
+            const nama = document.getElementById('nama').value.trim().toUpperCase();
+            
+            const siswa = data.find(item => 
+                item.nisn === nisn && item.nama.toUpperCase() === nama);
+            
+            const resultDiv = document.getElementById('result');
+            
+            if (siswa) {
+                resultDiv.style.display = 'block';
+                if (siswa.status === "LULUS") {
+                    resultDiv.innerHTML = `
+                        <h2>SELAMAT!</h2>
+                        <p>ANDA <span style="color:#28a745; font-weight:bold;">${siswa.status}</span></p>
+                        <p>${siswa.nama}</p>
+                        <p>NISN: ${siswa.nisn}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <h2>MAAF</h2>
+                        <p>ANDA <span style="color:#dc3545; font-weight:bold;">${siswa.status}</span></p>
+                        <p>${siswa.nama}</p>
+                        <p>NISN: ${siswa.nisn}</p>
+                    `;
+                }
+            } else {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <p style="color:#dc3545;">DATA TIDAK DITEMUKAN</p>
+                    <p>Periksa kembali NISN dan Nama Anda</p>
+                `;
+            }
+        });
+        
+      updateCountdown();
+    </script>
+</body>
+</html>
